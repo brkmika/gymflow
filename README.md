@@ -22,3 +22,4 @@ Zadužen za razvoj korisničkog profila, izradu personaliziranih planova trening
 
 Zajednički zadaci:
 Zajednički rad uključuje dizajn i razvoj korisničkog sučelja aplikacije, definiranje vizualnog identiteta te implemetaciju gerafova i progress barova za prikaz i praćenje korisničkog napretka tijekom treninga.
+
