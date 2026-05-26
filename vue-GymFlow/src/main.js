@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+// dodaj router kada bude gotov
+
+const app = createApp(App)
+
+app.mount('#app')

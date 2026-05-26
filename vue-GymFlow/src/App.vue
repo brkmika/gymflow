@@ -1,11 +1,22 @@
-<script setup></script>
+<script setup>
+import HomeView from './views/HomeView.vue';
+
+</script>
+Import { createApp } from 'vue'
+Import HomeView from './views/HomeView.vue'
+
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+ <div id="app">
+  <HomeView />
+ </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+#app {
+  font-family: arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+</style>
