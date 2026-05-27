@@ -2,13 +2,11 @@
 import HomeView from './views/HomeView.vue';
 
 </script>
-Import { createApp } from 'vue'
-Import HomeView from './views/HomeView.vue'
 
 
 <template>
  <div id="app">
-  <HomeView />
+  <RouterView />
  </div>
 </template>
 
