@@ -21,12 +21,36 @@
     </div>
 
    <div class="menu-grid">
-    <button @click="navigate('profil')">Profil</button>
-    <button @click="navigate('ciljevi')">Ciljevi</button>
-    <button @click="navigate('plan-treninga')">Plan treninga</button>
-    <button @click="navigate('logiraj-trening')">Logiraj trening</button>
-    <button @click="navigate('napredak')">Napredak</button>
-    <button @click="navigate('dnevnik')">Dnevnik</button>
+    <button class="menu-card" @click="navigate('profil')">
+        <h3> Profil </h3>
+        <p>Upravljajte svojim profilom i tjelesnim podacima</p>
+    </button>
+    <button class="menu-card" @click="navigate('ciljevi')">
+        <h3> Ciljevi </h3>
+        <p>Definirajte fitness ciljeve</p>
+    </button>
+    <button class="menu-card" @click="navigate('plan-treninga')">
+        <h3> Plan treninga </h3>
+        <p>Tjedni plan i predlošci</p>
+    </button>
+    <button class="menu-card" @click="navigate('logiraj-trening')">
+        <h3> Logiraj trening </h3>
+        <p>Unesite današnji trening</p>
+    </button>
+    <button class="menu-card" @click="navigate('napredak')">
+        <h3> Napredak </h3>
+        <p>Grafovi i statistika</p>
+    </button>
+    <button class="menu-card" @click="navigate('dnevnik')">
+        <h3> Dnevnik </h3>
+        <p>Povijest treninga</p>
+    </button>
+
+<!-- trebamo jos dodati ikone na dugma i trebamo ovaj logiraj trening napravit u posebnoj boji-->
+ <!-- mozda bi isto bilo dobro da stavimo ovaj gymflow logo ipak skroz ljevo a ne u sredinu-->
+  <!-- I da mozda stavimo malo veci padding izmedu naslova i ovih dugma i stagod vec-->
+   <!-- Nakon toga mozemo krenuti na routanje svakog dugma u svoj poseban tab i krenut radit funkcionalni dio-->
+
    </div>
    </div>
 </template>
@@ -97,6 +121,48 @@ const navigate = (screen) => {
     color: #6b7280;
 }
 
-/* treba jos menu gumbe, pitaj AI */
+/* Menu card */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.menu-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: none;
+    cursor:pointer;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+.menu-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.menu-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 4px;
+}
+
+.menu-card p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.menu-card.highlight h3 {
+    color: white;
+}
+
+.menu-card.highlight p {
+    color: #c7d2fe;
+}
+
 
 </style>
