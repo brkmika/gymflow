@@ -20,9 +20,10 @@
         </div>
     </div>
 
+    <!-- Zbog nekog razloga ova ikona za profil je samo ostala ogromna dok su sve ostale male-->
    <div class="menu-grid">
     <button class="menu-card" @click="navigate('profil')">
-        <div class="@menu-icon">
+        <div class="@menu-icon blue-bg">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -34,7 +35,7 @@
 
 
     <button class="menu-card" @click="navigate('ciljevi')">
-        <div class="menu-icon">
+        <div class="menu-icon green-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -46,7 +47,7 @@
 
 
     <button class="menu-card" @click="navigate('plan-treninga')">
-        <div class="menu-icon">
+        <div class="menu-icon purple-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -97,10 +98,13 @@
         <p>Povijest treninga</p>
     </button>
 
-<!-- trebamo jos dodati ikone na dugma i trebamo ovaj logiraj trening napravit u posebnoj boji-->
- <!-- mozda bi isto bilo dobro da stavimo ovaj gymflow logo ipak skroz ljevo a ne u sredinu-->
-  <!-- I da mozda stavimo malo veci padding izmedu naslova i ovih dugma i stagod vec-->
-   <!-- Nakon toga mozemo krenuti na routanje svakog dugma u svoj poseban tab i krenut radit funkcionalni dio-->
+<!-- NOTES: !!!!!!-->
+<!-- Treba nekako popravit ikonu za profil jer je ostala velika neznam zasto, ima note gore-->
+<!-- ovaj logiraj trening napravit u posebnoj boji-->
+<!-- mozda bi isto bilo dobro da stavimo ovaj gymflow logo ipak skroz ljevo a ne u sredinu-->
+<!-- I da mozda stavimo malo veci padding izmedu naslova i ovih dugma i stagod vec-->
+<!-- Nakon toga mozemo krenuti na routanje svakog dugma u svoj poseban tab i krenut radit funkcionalni dio-->
+<!-- dole u style setup sam napravio SVG za prva tri profila pa samo napravi i nadodaj za zadnja 3-->
 
    </div>
    </div>
@@ -215,5 +219,28 @@ const navigate = (screen) => {
     color: #c7d2fe;
 }
 
+/* Ikone */
+.menu-icon {
+    width: 48px;
+    height:48px;
+    border-radius: 50%;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom: 12px;
+}
 
+.menu-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.blue-bg {background: #dbeafe; }
+.blue-bg svg {color: #2563eb;}
+
+.green-bg {background: #dcfce7; }
+.green-bg svg {color: #16a34a;}
+
+.purple-bg {background: #f3e8ff; }
+.purple-bg svg {color: #9333ea;}
 </style>
