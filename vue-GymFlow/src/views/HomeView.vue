@@ -20,10 +20,10 @@
         </div>
     </div>
 
-    <!-- Zbog nekog razloga ova ikona za profil je samo ostala ogromna dok su sve ostale male-->
+
    <div class="menu-grid">
     <button class="menu-card" @click="navigate('profil')">
-        <div class="@menu-icon blue-bg">
+        <div class="menu-icon blue-bg">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -59,7 +59,7 @@
 
 
     <button class="menu-card" @click="navigate('logiraj-trening')">
-        <div class="menu-icon">
+        <div class="menu-icon white-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M12 4v16m8-8H4" />
@@ -71,7 +71,7 @@
 
 
     <button class="menu-card" @click="navigate('napredak')">
-        <div class="menu-icon">
+        <div class="menu-icon orange-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 
@@ -85,7 +85,7 @@
 
 
     <button class="menu-card" @click="navigate('dnevnik')">
-        <div class="menu-icon">
+        <div class="menu-icon red-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 
@@ -243,4 +243,16 @@ const navigate = (screen) => {
 
 .purple-bg {background: #f3e8ff; }
 .purple-bg svg {color: #9333ea;}
+
+
+
+.orange-bg {background: #ffedd5; }
+.orange-bg svg {color: #ea580c;}
+
+.red-bg {background: #fee2e2; }
+.red-bg svg {color: #dc2626; }
+
+
+
+
 </style>
