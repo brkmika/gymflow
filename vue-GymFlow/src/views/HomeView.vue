@@ -58,7 +58,7 @@
     </button>
 
 
-    <button class="menu-card" @click="navigate('logiraj-trening')">
+    <button class="menu-card highlight" @click="navigate('logiraj-trening')">
         <div class="menu-icon white-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -235,6 +235,7 @@ const navigate = (screen) => {
     height: 24px;
 }
 
+/* boje za ikone */
 .blue-bg {background: #dbeafe; }
 .blue-bg svg {color: #2563eb;}
 
@@ -244,15 +245,34 @@ const navigate = (screen) => {
 .purple-bg {background: #f3e8ff; }
 .purple-bg svg {color: #9333ea;}
 
-
-
 .orange-bg {background: #ffedd5; }
 .orange-bg svg {color: #ea580c;}
 
 .red-bg {background: #fee2e2; }
 .red-bg svg {color: #dc2626; }
 
+.white-bg {background: rgba(255,255,255,0.2);}
+.white-bg svg {color: white; }
 
+/* gradient za logiraj trening */
+
+.menu-card.highlight {
+    background: linear-gradient(135deg, #4f46e5, #9333ea);
+}
+
+.menu-card.highlight h3 {
+    color: white;
+}
+
+.menu-card.highlight p {
+    color: #c7d2fe;
+}
+
+/* novi razmak izmedu naslova i botuna */
+
+.header {
+    margin-bottom: 32px;
+}
 
 
 </style>
