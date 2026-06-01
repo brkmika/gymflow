@@ -7,12 +7,12 @@
     <h3> Osnovni podaci </h3>
     <div class="form-group">
         <label>Ime</label>
-        <input type="text" placeholder="Unesite ime" />
+        <input type="text" v-model="ime" placeholder="Unesite ime" />
     </div>
 
     <div class="form-group">
         <label>Prezime</label>
-        <input type="text" placeholder="Unesite prezime" />
+        <input type="text" v-model="prezime" placeholder="Unesite prezime" />
     </div>
     </div> 
 
@@ -20,16 +20,20 @@
     <h3> Tjelesni podaci </h3>
     <div class="form-group">
         <label> Težina (kg) </label>
-        <input type="number" placeholder="npr. 80" />
+        <input type="number" v-model="tezina" placeholder="npr. 80" />
     </div>
     <div class="form-group">
         <label> Visina (cm) </label>
-        <input type="number" placeholder="npr. 180" />
+        <input type="number" v-model="visina" placeholder="npr. 180" />
     </div>
     <div class="form-group">
         <label> Godine </label>
-        <input type="number" placeholder="npr. 21" />
+        <input type="number" v-model="godine" placeholder="npr. 21" />
     </div>
+    <div class="bmi-box" v-if="bmi">
+        <div class="bmi-label">BMI</div>
+        <div class="bmi-value"> {{  bmi  }}</div>
+   </div>
    </div>
    
    <button class="save-btn">Spremi promjene</button>
@@ -38,7 +42,7 @@
    
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 const router = useRouter();
 
 // reaktivne varijable za inputs
@@ -48,8 +52,12 @@ const tezina = ref('');
 const visina = ref('');
 const godine = ref('');
 
-// spojiti varijable na inpute sa v model
 // BMI izracun i funkcija za spremanje podataka
+const bmi = computed(() => {
+    if (!tezina.value || !visina.value) return null;
+    const visina_m = visina.value / 100; // pretvaranje cm u m
+    return (tezina.value / (visina_m * visina_m)).toFixed(1)
+});
 
 </script>
 
@@ -125,4 +133,25 @@ const godine = ref('');
     font-weight: 600;
 }
 
+/* BMI box stilovi */
+.bmi-box {
+    background: #eef2ff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 8px;
+}
+
+.bmi-label {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.bmi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+
+/* dodaj bmi-status tekst ispo (normalno, prekomjerno itd) */
 </style>
