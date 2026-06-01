@@ -1,0 +1,128 @@
+<template>
+    <div class="profile">
+        <button class="back-btn" @click="router.push('/')">← Natrag</button>
+        <h2> Profil korisnika </h2>
+
+    <div class="card">
+    <h3> Osnovni podaci </h3>
+    <div class="form-group">
+        <label>Ime</label>
+        <input type="text" placeholder="Unesite ime" />
+    </div>
+
+    <div class="form-group">
+        <label>Prezime</label>
+        <input type="text" placeholder="Unesite prezime" />
+    </div>
+    </div> 
+
+    <div class="card">
+    <h3> Tjelesni podaci </h3>
+    <div class="form-group">
+        <label> Težina (kg) </label>
+        <input type="number" placeholder="npr. 80" />
+    </div>
+    <div class="form-group">
+        <label> Visina (cm) </label>
+        <input type="number" placeholder="npr. 180" />
+    </div>
+    <div class="form-group">
+        <label> Godine </label>
+        <input type="number" placeholder="npr. 21" />
+    </div>
+   </div>
+   
+   <button class="save-btn">Spremi promjene</button>
+    </div>
+   </template>
+   
+<script setup>
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+const router = useRouter();
+
+// reaktivne varijable za inputs
+const ime = ref('');
+const prezime = ref('');
+const tezina = ref('');
+const visina = ref('');
+const godine = ref('');
+
+// spojiti varijable na inpute sa v model
+// BMI izracun i funkcija za spremanje podataka
+
+</script>
+
+<style scoped>
+
+/* stilovi za profil -> gumbovi i text */
+.profile {
+    padding: 24px;
+    min-height:100vh;
+}
+
+.profile h2 {
+    font-size:28px;
+    font-weight:700;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    border-radius:16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba (0,0,0,0.08);
+    margin-bottom: 16px;
+}
+
+.card h3 {
+    font-size: 16px;
+    font-weight: 600px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input {
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #4f46e5;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    paddinog: 0;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+</style>

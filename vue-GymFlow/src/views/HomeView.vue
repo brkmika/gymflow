@@ -99,12 +99,8 @@
     </button>
 
 <!-- NOTES: !!!!!!-->
-<!-- Treba nekako popravit ikonu za profil jer je ostala velika neznam zasto, ima note gore-->
-<!-- ovaj logiraj trening napravit u posebnoj boji-->
 <!-- mozda bi isto bilo dobro da stavimo ovaj gymflow logo ipak skroz ljevo a ne u sredinu-->
-<!-- I da mozda stavimo malo veci padding izmedu naslova i ovih dugma i stagod vec-->
-<!-- Nakon toga mozemo krenuti na routanje svakog dugma u svoj poseban tab i krenut radit funkcionalni dio-->
-<!-- dole u style setup sam napravio SVG za prva tri profila pa samo napravi i nadodaj za zadnja 3-->
+<!-- Kada radimo view prozore nazovi ih ImeView.vue -->
 
    </div>
    </div>
