@@ -20,11 +20,11 @@
     <h3> Tjelesni podaci </h3>
     <div class="form-group">
         <label> Težina (kg) </label>
-        <input type="number" v-model="tezina" placeholder="npr. 80" />
+        <input type="number" v-model="tezina" placeholder="npr. 80" min="30" max="300" />
     </div>
     <div class="form-group">
         <label> Visina (cm) </label>
-        <input type="number" v-model="visina" placeholder="npr. 180" />
+        <input type="number" v-model="visina" placeholder="npr. 180" min="100" max="250" />
     </div>
     <div class="form-group">
         <label> Godine </label>
@@ -33,6 +33,7 @@
     <div class="bmi-box" v-if="bmi">
         <div class="bmi-label">BMI</div>
         <div class="bmi-value"> {{  bmi  }}</div>
+        <div class="bmi-status"> {{ bmiStatus }}</div>
    </div>
    </div>
    
@@ -41,6 +42,7 @@
    </template>
    
 <script setup>
+
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 const router = useRouter();
@@ -58,6 +60,16 @@ const bmi = computed(() => {
     const visina_m = visina.value / 100; // pretvaranje cm u m
     return (tezina.value / (visina_m * visina_m)).toFixed(1)
 });
+
+// BMI Status
+const bmiStatus = computed(() => {
+    if(!bmi.value) return ''
+    if(bmi.value < 18.5) return "Ispod normalne težine"
+    if(bmi.value < 25) return "Normalna težina"
+    if(bmi.value < 30) return "Prekomjerna težina"
+    return "Pretilost"
+})
+
 
 </script>
 
@@ -153,5 +165,15 @@ const bmi = computed(() => {
 }
 
 
-/* dodaj bmi-status tekst ispo (normalno, prekomjerno itd) */
+/* BMI status stilovi */
+.bmi-status {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.form-group input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+}
 </style>
