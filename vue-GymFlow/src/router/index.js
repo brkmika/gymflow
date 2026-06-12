@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import ProgressView from '../views/ProgressView.vue'
+import GoalsView from '../views/GoalsView.vue'
 
 
 const routes = [
     { path: '/', component: HomeView },
     { path: '/profil', component: ProfileView},
-    { path: '/ciljevi', component: HomeView},
+    { path: '/ciljevi', component: GoalsView},
     { path: '/plan-treninga', component: HomeView},
     { path: '/logiraj-trening', component: HomeView},
     { path: '/napredak', component: ProgressView},
