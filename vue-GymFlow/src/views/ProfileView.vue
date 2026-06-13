@@ -36,6 +36,19 @@
         <div class="bmi-status"> {{ bmiStatus }}</div>
    </div>
    </div>
+
+   <div class="card">
+    <h3> Plan treninga</h3>
+    <div class="form-group">
+        <label> Tjedni cilj (broj treninga) </label>
+        <select v-model="userStore.teninziTjedno">
+            <option :value="3">3x tjedno</option>
+            <option :value="4">4x tjedno</option>
+            <option :value="5">5x tjedno</option>
+            <option :value="6">6x tjedno</option>
+        </select>
+   </div>
+   </div>
    
    <button class="save-btn">Spremi promjene</button>
     </div>
@@ -45,6 +58,9 @@
 
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
+import { useUserStore } from '../stores/userStore';
+
+const userStore = useUserStore();
 const router = useRouter();
 
 // reaktivne varijable za inputs

@@ -15,6 +15,11 @@ const chartBars = ref([
     { height: 68 }, { height: 75}, { height: 72},
 ])
 // ovisno o selectedPeriod treba pokazivati drugcije podatke -> to sljedeci put
+const overloadItems = ref([
+    { name: 'Bench Press', progress: '85kg -> 100kg (+17.6%)', percent: 85 },
+    { name: 'Squat', progress: '100kg -> 120kg (+20%)', percent: 83 },
+    { name: 'Deadlift', progress: '120kg -> 150kg (+25%)', percent: 80 },
+])
 </script>
 
 <template>
@@ -42,6 +47,21 @@ const chartBars = ref([
                 :style="{ height: bar.height + '%' }">
                 </div>
             </div> 
+        </div>
+        <div class="overload-card">
+            <h3> Progressive Overload - Compund vježbe</h3>
+            <div class="overload-list">
+                <div class="overload-item" v-for="item in overloadItems" :key="item.name">
+                    <div class="overload-header">
+                        <span class="exercise-name">{{ item.name }}</span>
+                        <span class="exercise-progress">{{ item.progress }}</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" :style="{width: item.percent + '%'}">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
                 <div class="chart-labels">
                     <span v-for="label in chartLabels"
@@ -129,6 +149,52 @@ h2 {
     margin-top: 8px;
     font-size: 11px;
     color: #9ca3af;
+}
+
+.overload-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+}
+
+.overload-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px
+}
+
+.overload-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.overload-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.exercise-name { font-weight: 500; }
+
+.exercise-progress {
+    color: #4f46e5;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.progress-track {
+    background: #e5e7eb;
+    border-radius: 10px;
+    height: 8px;
+}
+
+.progress-fill {
+    background: #22c55e;
+    border-radius: 10px;
+    height: 100%;
 }
 
 </style>
