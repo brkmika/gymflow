@@ -48,5 +48,70 @@ export const useWorkoutStore = defineStore('workout', () => {
     return plans[userStore.treninziTjedno] || null
    })
 
-   return { weeklyPlan }
+const exercises = {
+   'Full-Body A': [
+    { name: 'Squat', sets: 3, reps: 8, weight: null },
+    { name: 'Bench Press', sets: 3, reps: 8, weight: null },
+    { name: 'Bent Over Row', sets: 3, reps: 8, weight: null },
+    { name: 'Overhead Press', sets: 3, reps: 8, weight: null },
+    { name: 'Romanian Deadlift', sets: 3, reps: 10, weight: null },
+  ],
+  'Full-Body B': [
+    { name: 'Deadlift', sets: 3, reps: 6, weight: null },
+    { name: 'Incline Bench Press', sets: 3, reps: 8, weight: null },
+    { name: 'Pull Up', sets: 3, reps: 8, weight: null },
+    { name: 'Dumbbell Shoulder Press', sets: 3, reps: 10, weight: null },
+    { name: 'Leg Press', sets: 3, reps: 10, weight: null },
+  ],
+  'Full-Body C': [
+    { name: 'Front Squat', sets: 3, reps: 8, weight: null },
+    { name: 'Dips', sets: 3, reps: 10, weight: null },
+    { name: 'Cable Row', sets: 3, reps: 10, weight: null },
+    { name: 'Lateral Raise', sets: 3, reps: 12, weight: null },
+    { name: 'Leg Curl', sets: 3, reps: 12, weight: null },
+  ],
+   'Upper': [
+    { name: 'Bench Press', sets: 4, reps: 8, weight: null },
+    { name: 'Bent Over Row', sets: 4, reps: 8, weight: null },
+    { name: 'Overhead Press', sets: 3, reps: 10, weight: null },
+    { name: 'Pull Up', sets: 3, reps: 8, weight: null },
+    { name: 'Tricep Pushdown', sets: 3, reps: 12, weight: null },
+  ],
+  'Lower': [
+    { name: 'Squat', sets: 4, reps: 8, weight: null },
+    { name: 'Romanian Deadlift', sets: 3, reps: 10, weight: null },
+    { name: 'Leg Press', sets: 3, reps: 12, weight: null },
+    { name: 'Leg Curl', sets: 3, reps: 12, weight: null },
+    { name: 'Calf Raise', sets: 4, reps: 15, weight: null },
+  ],
+  'Push': [
+    { name: 'Bench Press', sets: 4, reps: 8, weight: null },
+    { name: 'Incline Dumbbell Press', sets: 3, reps: 10, weight: null },
+    { name: 'Overhead Press', sets: 3, reps: 10, weight: null },
+    { name: 'Lateral Raise', sets: 3, reps: 12, weight: null },
+    { name: 'Tricep Pushdown', sets: 3, reps: 12, weight: null },
+  ],
+    'Pull': [
+    { name: 'Deadlift', sets: 3, reps: 6, weight: null },
+    { name: 'Pull Up', sets: 4, reps: 8, weight: null },
+    { name: 'Cable Row', sets: 3, reps: 10, weight: null },
+    { name: 'Face Pull', sets: 3, reps: 15, weight: null },
+    { name: 'Bicep Curl', sets: 3, reps: 12, weight: null },
+  ],
+  'Legs': [
+    { name: 'Squat', sets: 4, reps: 8, weight: null },
+    { name: 'Romanian Deadlift', sets: 3, reps: 10, weight: null },
+    { name: 'Leg Press', sets: 3, reps: 12, weight: null },
+    { name: 'Leg Curl', sets: 3, reps: 12, weight: null },
+    { name: 'Calf Raise', sets: 4, reps: 15, weight: null },
+    { name: 'Leg Extension', sets: 3, reps: 12, weight: null },
+  ],
+}
+
+const getExercises = (workoutName) => {
+  return exercises[workoutName] || []
+}
+
+
+   return { weeklyPlan, getExercises }
 })
