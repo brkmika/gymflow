@@ -4,6 +4,8 @@ import ProfileView from '../views/ProfileView.vue'
 import ProgressView from '../views/ProgressView.vue'
 import GoalsView from '../views/GoalsView.vue'
 import PlanView from '../views/PlanView.vue'
+import WorkoutDetailView from '../views/WorkoutDetailView.vue'
+
 
 
 const routes = [
@@ -14,6 +16,7 @@ const routes = [
     { path: '/logiraj-trening', component: HomeView},
     { path: '/napredak', component: ProgressView},
     { path: '/dnevnik', component: HomeView},
+    { path: '/trening', component: WorkoutDetailView},
 ]
 
 const router = createRouter({

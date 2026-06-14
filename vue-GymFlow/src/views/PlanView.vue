@@ -20,7 +20,7 @@ const planLabel = computed(() => {
 
 const handleClick = (workout) => {
     if (workout.exercises === 0) return
-    // nadodaj navigaciju na detalje treninga
+    router.push({path: '/trening', query: { name: workout.name, day: workout.day} })
 }
 </script>
 
