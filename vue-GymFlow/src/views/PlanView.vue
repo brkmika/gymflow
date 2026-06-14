@@ -15,7 +15,7 @@ const planLabel = computed(() => {
     5: '5x tjedno - Upper/Lower/PPL',
     6: '6x tjedno - Push/Pull/Legs',
   }
-  return labels[userStore.TreninziTjedno] || '';
+  return labels[userStore.treninziTjedno] || '';
 })
 
 const handleClick = (workout) => {
@@ -30,13 +30,13 @@ const handleClick = (workout) => {
     <h2>Tjedni plan treninga</h2>
 
     <!-- odabir frekvencije ako nije odabrana -->
-     <div v-if="!userStore.TreninziTjedno" class="frequency-picker">
+     <div v-if="!userStore.treninziTjedno" class="frequency-picker">
       <h3> Koliko puta tjedno treniraš?</h3>
       <div class="frequency-grid">
         <button v-for="n in [3, 4, 5, 6]"
         :key="n"
         class="frequency-btn"
-        @click="userStore.TreninziTjedno = n">
+        @click="userStore.treninziTjedno = n">
         <span class="freq-number">{{ n }}x</span>
         <span class="freq-label">tjedno</span>
         </button>

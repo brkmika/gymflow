@@ -7,12 +7,12 @@
     <h3> Osnovni podaci </h3>
     <div class="form-group">
         <label>Ime</label>
-        <input type="text" v-model="ime" placeholder="Unesite ime" />
+        <input type="text" v-model="userStore.ime" placeholder="Unesite ime" />
     </div>
 
     <div class="form-group">
         <label>Prezime</label>
-        <input type="text" v-model="prezime" placeholder="Unesite prezime" />
+        <input type="text" v-model="userStore.prezime" placeholder="Unesite prezime" />
     </div>
     </div> 
 
@@ -20,15 +20,15 @@
     <h3> Tjelesni podaci </h3>
     <div class="form-group">
         <label> Težina (kg) </label>
-        <input type="number" v-model="tezina" placeholder="npr. 80" min="30" max="300" />
+        <input type="number" v-model="userStore.tezina" placeholder="npr. 80" min="30" max="300" />
     </div>
     <div class="form-group">
         <label> Visina (cm) </label>
-        <input type="number" v-model="visina" placeholder="npr. 180" min="100" max="250" />
+        <input type="number" v-model="userStore.visina" placeholder="npr. 180" min="100" max="250" />
     </div>
     <div class="form-group">
         <label> Godine </label>
-        <input type="number" v-model="godine" placeholder="npr. 21" />
+        <input type="number" v-model="userStore.godine" placeholder="npr. 21" />
     </div>
     <div class="bmi-box" v-if="bmi">
         <div class="bmi-label">BMI</div>
@@ -41,7 +41,7 @@
     <h3> Plan treninga</h3>
     <div class="form-group">
         <label> Tjedni cilj (broj treninga) </label>
-        <select v-model="userStore.teninziTjedno">
+        <select v-model="userStore.treninziTjedno">
             <option :value="3">3x tjedno</option>
             <option :value="4">4x tjedno</option>
             <option :value="5">5x tjedno</option>
@@ -63,18 +63,11 @@ import { useUserStore } from '../stores/userStore';
 const userStore = useUserStore();
 const router = useRouter();
 
-// reaktivne varijable za inputs
-const ime = ref('');
-const prezime = ref('');
-const tezina = ref('');
-const visina = ref('');
-const godine = ref('');
-
 // BMI izracun i funkcija za spremanje podataka
 const bmi = computed(() => {
-    if (!tezina.value || !visina.value) return null;
-    const visina_m = visina.value / 100; // pretvaranje cm u m
-    return (tezina.value / (visina_m * visina_m)).toFixed(1)
+    if (!userStore.tezina || !userStore.visina) return null;
+    const visina_m = userStore.visina / 100; // pretvaranje cm u m
+    return (userStore.tezina / (visina_m * visina_m)).toFixed(1)
 });
 
 // BMI Status
