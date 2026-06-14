@@ -78,6 +78,7 @@ const handleClick = (workout) => {
 .plan {
   padding: 24px;
   min-height: 100vh;
+  background: linear-gradient()
 }
 
 .back-btn {
