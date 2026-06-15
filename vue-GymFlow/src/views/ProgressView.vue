@@ -1,13 +1,17 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useUserStore } from '../stores/userStore'
 
 const router = useRouter();
+const userStore = useUserStore()
 
 const periods = ['1M', '3M', '6M', '1G'];
 const selectedPeriod = ref('1M');
 
+// mozda bi htio ovdje napravit da se pokazuju zadnjih 6mj npr a ne da budu svih 12
 const chartLabels = ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'];
+
 const chartBars = ref([
     { height: 45 }, { height: 52}, { height: 48},
     { height: 55 }, { height: 60}, { height: 58},
@@ -20,58 +24,93 @@ const overloadItems = ref([
     { name: 'Squat', progress: '100kg -> 120kg (+20%)', percent: 83 },
     { name: 'Deadlift', progress: '120kg -> 150kg (+25%)', percent: 80 },
 ])
+
+const bmi = computed(() => {
+    if (!userStore.tezina || !userStore.visina) return null
+    const visina_m = userStore.visina / 100
+    return (userStore.tezina / (visina_m * visina_m)).toFixed(1)
+})
+
+const bmiStatus = computed(() => {
+    if(!bmi.value) return ''
+    if(bmi.value < 18.5) return 'Ispod normalne težine'
+    if(bmi.value < 25) return 'Normalna težina'
+    if(bmi.value < 30) return 'Prekomjerna težina'
+    return 'Pretilost'
+})
+
 </script>
 
 <template>
+  <div class="progress-view">
+    <button class="back-btn" @click="router.push('/')">← Natrag</button>
+    <h2>Napredak i statistika</h2>
 
-    <div class="progress-view">
-        <button class ="back-btn" @click="router.push('/')">← Nazad</button>
-        <h2> Napredak i statistika</h2>
+    <div class="period-selector">
+      <button
+        v-for="p in periods"
+        :key="p"
+        :class="{ active: selectedPeriod === p }"
+        @click="selectedPeriod = p">
+        {{ p }}
+      </button>
+    </div>
 
-        <div class="period-selector">
-            <button v-for="p in periods"
-            :key="p"
-            :class="{ active: selectedPeriod === p }"
-            @click="selectedPeriod = p">
-                {{ p }}
-            </button>
+    <div class="chart-card">
+      <h3>Ukupni volumen treninga</h3>
+      <div class="bar-chart">
+        <div v-for="(bar, idx) in chartBars" :key="idx" class="bar-wrapper">
+          <div class="bar" :style="{ height: bar.height + '%' }"></div>
         </div>
+      </div>
+      <div class="chart-labels">
+        <span v-for="label in chartLabels" :key="label">{{ label }}</span>
+      </div>
+      <!-- treba spojiti sa stvarnim podacima iz historyStore -->
+    </div>
 
-        <div class="chart-card">
-            <h3> Ukupni volumen treninga</h3>
-            <div class="bar-chart">
-                <div v-for="(bar, idx) in chartBars"
-                :key="idx"
-                class="bar-wrapper">
-                <div class="bar"
-                :style="{ height: bar.height + '%' }">
-                </div>
-            </div> 
+    <div class="overload-card">
+      <h3>Progressive Overload - Compound vježbe</h3>
+      <div class="overload-list">
+        <div class="overload-item" v-for="item in overloadItems" :key="item.name">
+          <div class="overload-header">
+            <span class="exercise-name">{{ item.name }}</span>
+            <span class="exercise-progress">{{ item.progress }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" :style="{ width: item.percent + '%' }"></div>
+          </div>
         </div>
-        <div class="overload-card">
-            <h3> Progressive Overload - Compund vježbe</h3>
-            <div class="overload-list">
-                <div class="overload-item" v-for="item in overloadItems" :key="item.name">
-                    <div class="overload-header">
-                        <span class="exercise-name">{{ item.name }}</span>
-                        <span class="exercise-progress">{{ item.progress }}</span>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill" :style="{width: item.percent + '%'}">
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <!-- treba dinamicki izracun iz historyStore kada mauro zavrsi logiranje -->
+    </div>
+
+    <div class="metrics-card">
+      <h3>Tjelesni podaci</h3>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="metric-label">Težina</div>
+          <div class="metric-value">{{ userStore.tezina || '-' }} kg</div>
         </div>
-                <div class="chart-labels">
-                    <span v-for="label in chartLabels"
-                    :key="label">
-                    {{ label }}
-                    </span>
-                </div>
+        <div class="metric-item">
+          <div class="metric-label">Visina</div>
+          <div class="metric-value">{{ userStore.visina || '-' }} cm</div>
         </div>
-     </div>
+        <div class="metric-item">
+          <div class="metric-label">BMI</div>
+          <div class="metric-value">{{ bmi || '-' }}</div>
+          <div class="metric-status" v-if="bmiStatus">{{ bmiStatus }}</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Godine</div>
+          <div class="metric-value">{{ userStore.godine || '-' }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </template>
+
 
 
 <style scoped>
@@ -115,6 +154,14 @@ h2 {
 .period-selector button.active {
     background: #4f46e5;
     color: white;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
 }
 
 .chart-card h3 {
@@ -195,6 +242,50 @@ h2 {
     background: #22c55e;
     border-radius: 10px;
     height: 100%;
+}
+
+.metrics-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+.metrics-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metric-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.metric-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.metric-status {
+  font-size: 12px;
+  color: #16a34a;
+  margin-top: 4px;
 }
 
 </style>
