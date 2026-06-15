@@ -15,7 +15,7 @@
             <span class="stat-label">Progressive Overload</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number purple">4/5</span> <!-- OVO INTO TREBA BITI DINAMICKI IZRACUNATO KASNIJE-->
+            <span class="stat-number purple">{{ tjedniCilj }}</span> <!-- OVO INTO TREBA BITI DINAMICKI IZRACUNATO KASNIJE-->
             <span class="stat-label">Tjedni cilj</span>
         </div>
     </div>
@@ -112,12 +112,20 @@
 // quick stats trebaju biti dinamicni
 
 import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userStore'
+import { computed } from 'vue'
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const navigate = (screen) => {
     router.push('/' + screen)
 }
+
+const tjedniCilj = computed(() => {
+    if(!userStore.treninziTjedno) return '-'
+    return `0/${userStore.treninziTjedno}`
+})
 
 // spoji gumbe sa navigate
 

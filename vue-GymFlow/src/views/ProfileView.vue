@@ -50,7 +50,7 @@
    </div>
    </div>
    
-   <button class="save-btn">Spremi promjene</button>
+   <button class="save-btn" :class="{ saved: saved }" @click="spremiPromjene">{{ saved ? '✓ Spremljeno!' : 'Spremi promjene' }}</button>
     </div>
    </template>
    
@@ -62,6 +62,8 @@ import { useUserStore } from '../stores/userStore';
 
 const userStore = useUserStore();
 const router = useRouter();
+
+const saved = ref(false)
 
 // BMI izracun i funkcija za spremanje podataka
 const bmi = computed(() => {
@@ -79,6 +81,10 @@ const bmiStatus = computed(() => {
     return "Pretilost"
 })
 
+const spremiPromjene = () => {
+    saved.value = true
+    setTimeout(() => saved.value = false, 2000)
+}
 
 </script>
 
@@ -184,5 +190,9 @@ const bmiStatus = computed(() => {
 .form-group input:focus {
     border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+}
+
+.save-btn.saved {
+    background: #16a34a;
 }
 </style>

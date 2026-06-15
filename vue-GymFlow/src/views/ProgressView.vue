@@ -124,6 +124,7 @@ const bmiStatus = computed(() => {
     background: none;
     border: none;
     color: #4f46e5;
+    cursor:pointer;
     font-size: 15px;
     margin-bottom: 16px;
     padding: 0;
