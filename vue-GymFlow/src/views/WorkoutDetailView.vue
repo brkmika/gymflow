@@ -2,10 +2,12 @@
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 import { useWorkoutStore } from '../stores/workoutStore';
+import { useHistoryStore } from '../stores/historyStore';
 
 const router = useRouter()
 const route = useRoute()
 const workoutStore = useWorkoutStore()
+const historyStore = useHistoryStore()
 
 // Povuci workout podatke na temelju route parametra
 const workout = {
@@ -26,6 +28,18 @@ const addSet = (exerciseIdx) => {
 const removeSet = (exerciseIdx, setIdx) => {
     if(exercises.value[exerciseIdx].sets.length === 1) return
     exercises.value[exerciseIdx].sets.splice(setIdx, 1)
+}
+
+const saveWorkout = () => {
+  const hasWeights = exercises.value.some(e => e.sets.some(s => s.weight !== null && s.weight !== ''))
+
+  if (!hasWeights){
+    alert('Logiraj barem jednu težinu prije spremanja!')
+    return
+  }
+
+  historyStore.saveWorkout(workout.name, workout.day, exercises.value)
+  router.push('/plan-treninga')
 }
 
 </script>
@@ -54,7 +68,7 @@ const removeSet = (exerciseIdx, setIdx) => {
             </div>
         </div>
         <!-- Napravit: spremanje unesenih tezina-->
-         <button class="save-btn">Spremi trening</button>
+         <button class="save-btn" @click="saveWorkout">Spremi trening</button>
     </div>
 </template>
 
