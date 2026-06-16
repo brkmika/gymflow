@@ -123,5 +123,18 @@ const getMonthlyVolume = (numMonths) => {
   return months
 }
 
-    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume}
+const isDayCompletedThisWeek = (dayName) => {
+    const currentWeekWorkouts = getCurrentWeekWorkouts()
+
+    for(let i = 0; i < currentWeekWorkouts.length; i++){
+        if (currentWeekWorkouts[i].day === dayName) {
+            return true
+        }
+    }
+
+    return false
+}
+
+
+    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume, isDayCompletedThisWeek}
 })

@@ -3,10 +3,12 @@ import { useRouter } from 'vue-router';
 import { useWorkoutStore } from '../stores/workoutStore';
 import { computed } from 'vue';
 import { useUserStore } from '../stores/userStore';
+import { useHistoryStore } from '../stores/historyStore'
 
 const router = useRouter();
 const workoutStore = useWorkoutStore();
 const userStore = useUserStore();
+const historyStore = useHistoryStore()
 
 const planLabel = computed(() => {
   const labels = {
@@ -87,7 +89,11 @@ const weekRange = computed(() => {
               {{ workout.exercises }} vježbi
             </div>
           </div>
-          <div v-if="workout.completed" class="check-icon">✓</div>
+          <div v-if="historyStore.isDayCompletedThisWeek(workout.day)" class="check-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -232,6 +238,23 @@ h2 {
 .week-range {
   color: #6b7280;
   margin-bottom: 16px;
+}
+
+.check-icon {
+  width: 34px;
+  height: 34px;
+  background: #dcfce7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.check-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #16a34a;
 }
 
 </style>
