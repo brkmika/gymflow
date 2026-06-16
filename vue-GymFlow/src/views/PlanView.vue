@@ -22,6 +22,26 @@ const handleClick = (workout) => {
     if (workout.exercises === 0) return
     router.push({path: '/trening', query: { name: workout.name, day: workout.day} })
 }
+
+const weekRange = computed(() => {
+  const today = new Date()
+  const dayOfWeek = today.getDay()
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+  
+  const monday = new Date(today)
+  monday.setDate(today.getDate() + diffToMonday)
+
+  const sunday = new Date(monday)
+  sunday.setDate(monday.getDate() + 6)
+
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    return `${day}.${month}`
+  }
+   return `${formatDate(monday)} - ${formatDate(sunday)}.${sunday.getFullYear()}`
+})
+
 </script>
 
 <template>
@@ -45,6 +65,7 @@ const handleClick = (workout) => {
 
      <!-- tjedni plan -->
       <div v-else>
+        <p class="week-range">{{ weekRange }}</p>
         <div class="plan-header">
           <p class="plan-type"> {{ planLabel }}</p>
           <button class="change-btn" @click="userStore.treninziTjedno = null">
@@ -78,7 +99,7 @@ const handleClick = (workout) => {
 .plan {
   padding: 24px;
   min-height: 100vh;
-  background: linear-gradient()
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
 }
 
 .back-btn {
@@ -208,6 +229,9 @@ h2 {
   font-weight: 700;
 }
 
-
+.week-range {
+  color: #6b7280;
+  margin-bottom: 16px;
+}
 
 </style>
