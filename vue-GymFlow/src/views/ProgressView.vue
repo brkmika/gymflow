@@ -8,8 +8,8 @@ const router = useRouter();
 const userStore = useUserStore()
 const historyStore = useHistoryStore()
 
-const periods = ['1M', '3M', '6M', '1G'];
-const selectedPeriod = ref('1M');
+const periods = ['3M', '6M', '1G'];
+const selectedPeriod = ref('3M');
 
 // mozda bi htio ovdje napravit da se pokazuju zadnjih 6mj npr a ne da budu svih 12
 const chartLabels = ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'];
@@ -45,9 +45,16 @@ const volumeData = computed (() => {
   return historyStore.getVolumeHistory()
 })
 
+const periodToMonths = {
+  '3M': 3,
+  '6M': 6,
+  '1G': 12,
+}
+
 //ovo ce pretvarat volumen u postotak visine bara (znaci maximum od 100%)
 const chartBarsReal = computed(() => {
-  const months = historyStore.getMonthlyVolume(5)
+  const numMonths = periodToMonths[selectedPeriod.value]
+  const months = historyStore.getMonthlyVolume(numMonths)
   const maxVolume = Math.max(...months.map(m => m.volume), 1)
 
   const bars = []
@@ -199,9 +206,11 @@ h2 {
 
 .bar-wrapper {
     flex: 1;
+    max-width: 80px;
     height: 100%;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
 }
 
 .bar {
