@@ -21,11 +21,20 @@ const chartBars = ref([
     { height: 68 }, { height: 75}, { height: 72},
 ])
 // ovisno o selectedPeriod treba pokazivati drugcije podatke -> to sljedeci put
-const overloadItems = ref([
-    { name: 'Bench Press', progress: '85kg -> 100kg (+17.6%)', percent: 85 },
-    { name: 'Squat', progress: '100kg -> 120kg (+20%)', percent: 83 },
-    { name: 'Deadlift', progress: '120kg -> 150kg (+25%)', percent: 80 },
-])
+const compoundExercises = ['Bench Press', 'Squat', 'Deadlift', 'Overhead Press', 'Bent Over Row']
+
+const overloadItemsReal = computed(() => {
+  const items = []
+
+  for(let i = 0; i < compoundExercises.length; i++){
+    const progress = historyStore.getExerciseProgress(compoundExercises[i])
+    if(progress) {
+      items.push(progress)
+    }
+  }
+
+  return items
+})
 
 const bmi = computed(() => {
     if (!userStore.tezina || !userStore.visina) return null
@@ -97,17 +106,18 @@ const chartBarsReal = computed(() => {
 
     <div class="overload-card">
       <h3>Progressive Overload - Compound vježbe</h3>
-      <div class="overload-list">
-        <div class="overload-item" v-for="item in overloadItems" :key="item.name">
+      <div class="overload-list" v-if="overloadItemsReal.length > 0">
+        <div class="overload-item" v-for="item in overloadItemsReal" :key="item.name">
           <div class="overload-header">
             <span class="exercise-name">{{ item.name }}</span>
-            <span class="exercise-progress">{{ item.progress }}</span>
+            <span class="exercise-progress">{{ item.first }}kg → {{ item.last }}kg ({{ item.percent > 0 ? '+' : '' }}{{ item.percent }}%)</span>
           </div>
-          <div class="progress-track">
-            <div class="progress-fill" :style="{ width: item.percent + '%' }"></div>
-          </div>
-        </div>
-      </div>
+         <div class="progress-track">
+      <div class="progress-fill" :class="item.percent < 0 ? 'negative' : 'positive'" :style="{ width: Math.max(0, Math.min((item.percent / 25) * 100, 100)) + '%' }"></div>
+    </div>
+  </div>
+</div>
+<p class="empty-overload" v-else>Nema podataka još. Odradi Bench Press, Squat ili Deadlift!</p>
       <!-- treba dinamicki izracun iz historyStore kada mauro zavrsi logiranje -->
     </div>
 
@@ -268,7 +278,6 @@ h2 {
 }
 
 .progress-fill {
-    background: #22c55e;
     border-radius: 10px;
     height: 100%;
 }
@@ -315,6 +324,14 @@ h2 {
   font-size: 12px;
   color: #16a34a;
   margin-top: 4px;
+}
+
+.progress-fill.positive {
+  background: #22c55e;
+}
+
+.progress-fill.negative {
+  background: #ef4444;
 }
 
 </style>

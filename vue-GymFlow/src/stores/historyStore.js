@@ -135,6 +135,55 @@ const isDayCompletedThisWeek = (dayName) => {
     return false
 }
 
+// pronalazi najvecu tezinu za odredenu vjezbu u jednom treningu
+const getMaxWeightForExercise = (workout, exerciseName) => {
+    let maxWeight = 0
 
-    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume, isDayCompletedThisWeek}
+    for(let i = 0; i < workout.exercises.length; i++){
+        if (workout.exercises[i].name === exerciseName) {
+            for(let j = 0; j < workout.exercises[i].sets.length; j++){
+                const w = Number(workout.exercises[i].sets[j].weight)
+                if (w > maxWeight) {
+                    maxWeight = w
+                }
+            }
+        }
+    }
+
+    return maxWeight
+}
+
+//racuna progresiu za odredjenu vjezbu i usporeduje prvi i zadnji put
+const getExerciseProgress = (exerciseName) => {
+    let firstWeight = null
+    let lastWeight = null
+    
+    for(let i = 0; i < workoutHistory.value.length; i++){
+        const workout = workoutHistory.value[i]
+        const weight = getMaxWeightForExercise(workout, exerciseName)
+
+        if(weight > 0) {
+            if(firstWeight === null) {
+                firstWeight = weight
+            }
+            lastWeight = weight
+        }
+    }
+
+    if(firstWeight === null || lastWeight === null){
+        return null
+    }
+
+    const percentChange = ((lastWeight - firstWeight) / firstWeight) * 100
+
+    return {
+        name: exerciseName,
+        first: firstWeight,
+        last: lastWeight,
+        percent: percentChange.toFixed(1)
+    }
+}
+
+
+    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume, isDayCompletedThisWeek, getExerciseProgress}
 })
