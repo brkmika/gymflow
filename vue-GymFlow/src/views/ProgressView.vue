@@ -2,9 +2,11 @@
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import { useUserStore } from '../stores/userStore'
+import { useHistoryStore } from '../stores/historyStore'
 
 const router = useRouter();
 const userStore = useUserStore()
+const historyStore = useHistoryStore()
 
 const periods = ['1M', '3M', '6M', '1G'];
 const selectedPeriod = ref('1M');
@@ -39,6 +41,22 @@ const bmiStatus = computed(() => {
     return 'Pretilost'
 })
 
+const volumeData = computed (() => {
+  return historyStore.getVolumeHistory()
+})
+
+//ovo ce pretvarat volumen u postotak visine bara (znaci maximum od 100%)
+const chartBarsReal = computed(() => {
+  const months = historyStore.getMonthlyVolume(5)
+  const maxVolume = Math.max(...months.map(m => m.volume), 1)
+
+  const bars = []
+  for (let i = 0; i < months.length; i++) {
+    const percent = (months[i].volume / maxVolume) * 100
+    bars.push({ height: percent, label: months[i].label })
+  }
+  return bars
+})
 </script>
 
 <template>
@@ -56,18 +74,19 @@ const bmiStatus = computed(() => {
       </button>
     </div>
 
-    <div class="chart-card">
-      <h3>Ukupni volumen treninga</h3>
-      <div class="bar-chart">
-        <div v-for="(bar, idx) in chartBars" :key="idx" class="bar-wrapper">
-          <div class="bar" :style="{ height: bar.height + '%' }"></div>
-        </div>
-      </div>
-      <div class="chart-labels">
-        <span v-for="label in chartLabels" :key="label">{{ label }}</span>
-      </div>
-      <!-- treba spojiti sa stvarnim podacima iz historyStore -->
+<div class="chart-card">
+  <h3>Ukupni volumen treninga</h3>
+  <div class="bar-chart" v-if="chartBarsReal.length > 0">
+    <div v-for="(bar, idx) in chartBarsReal" :key="idx" class="bar-wrapper">
+      <div class="bar" :style="{ height: bar.height + '%' }"></div>
     </div>
+  </div>
+  <p class="empty-chart" v-else>Nema podataka za prikaz. Odradi prvi trening!</p>
+
+  <div class="chart-labels" v-if="chartBarsReal.length > 0">
+  <span v-for="(bar, idx) in chartBarsReal" :key="idx">{{ bar.label }}</span>
+</div>
+</div>
 
     <div class="overload-card">
       <h3>Progressive Overload - Compound vježbe</h3>

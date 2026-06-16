@@ -5,6 +5,7 @@ import ProgressView from '../views/ProgressView.vue'
 import GoalsView from '../views/GoalsView.vue'
 import PlanView from '../views/PlanView.vue'
 import WorkoutDetailView from '../views/WorkoutDetailView.vue'
+import HistoryView from '@/views/HistoryView.vue'
 
 
 
@@ -15,7 +16,7 @@ const routes = [
     { path: '/plan-treninga', component: PlanView},
     { path: '/logiraj-trening', component: HomeView},
     { path: '/napredak', component: ProgressView},
-    { path: '/dnevnik', component: HomeView},
+    { path: '/dnevnik', component: HistoryView},
     { path: '/trening', component: WorkoutDetailView},
 ]
 

@@ -145,7 +145,7 @@ const spremiPromjene = () => {
     font-size: 15px;
     cursor: pointer;
     margin-bottom: 16px;
-    paddinog: 0;
+    padding: 0;
 }
 
 .save-btn {
