@@ -7,15 +7,15 @@
 
     <div class="quick-stats">
         <div class="stat-card">
-            <span class="stat-number indigo">12</span> <!-- OVO TREBA BITI DINAMICKI IZRACUNATO KASNIJE-->
+            <span class="stat-number indigo">{{  treninziOvajMjesec }}</span>
             <span class="stat-label">Treninga ovaj mjesec </span>
         </div>
         <div class="stat-card">
-            <span class="stat-number green">+8%</span> <!-- OVO ISTO TREBA BITI DINAMICKI IZRACUNATO KASNIJE-->
+            <span class="stat-number green">{{  bestOverload }}</span> 
             <span class="stat-label">Progressive Overload</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number purple">{{ tjedniCilj }}</span> <!-- OVO INTO TREBA BITI DINAMICKI IZRACUNATO KASNIJE-->
+            <span class="stat-number purple">{{ tjedniCilj }}</span>
             <span class="stat-label">Tjedni cilj</span>
         </div>
     </div>
@@ -114,21 +114,56 @@
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore'
 import { computed } from 'vue'
+import { useHistoryStore } from '@/stores/historyStore';
 
 const router = useRouter()
 const userStore = useUserStore()
+const historyStore = useHistoryStore()
 
 const navigate = (screen) => {
     router.push('/' + screen)
 }
 
+// tjedni cilj = koliko je odradeno
 const tjedniCilj = computed(() => {
     if(!userStore.treninziTjedno) return '-'
-    return `0/${userStore.treninziTjedno}`
+    const odradeno = historyStore.getCurrentWeekWorkouts().length
+    return `${odradeno}/${userStore.treninziTjedno}`
 })
 
-// spoji gumbe sa navigate
+// broj treninga ovaj mjesec
+const treninziOvajMjesec = computed(() => {
+    const now = new Date()
+    const mjesec = now.getMonth() + 1
+    const godina = now.getFullYear()
 
+    let count = 0
+    for(let i = 0; i < historyStore.workoutHistory.length; i++) {
+        const parts = historyStore.workoutHistory[i].date.split('.')
+        if(Number(parts[1]) === mjesec && Number(parts[2]) === godina) {
+            count++
+        }
+    }
+    return count
+})
+
+// najbolji progressive overload % od compound vjezbi !!!!!!!!!!!!!!! Trebam vidjet dal je bolje tako ili uzet prosjek svega
+const compoundExercises = ['Bench Press', 'Squat', 'Deadlift', 'Overhead Press', 'Bent Over Row']
+
+const bestOverload = computed(() => {
+    let best = null
+
+    for (let i = 0; i < compoundExercises.length; i++) {
+        const result = historyStore.getExerciseProgress(compoundExercises[i])
+        if(result && (best === null || Number(result.percent) > Number(best.percent))) {
+            best = result
+        }
+    }
+
+    if(!best) return '-'
+    const prefix = best.percent > 0 ? '+' : ''
+    return `${prefix}${best.percent}%`
+})
 
 </script>
 

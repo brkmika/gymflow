@@ -36,6 +36,19 @@ const overloadItemsReal = computed(() => {
   return items
 })
 
+// citam ciljeve iz localStorage
+const goals = ref(JSON.parse(localStorage.getItem('goals')) || [])
+
+const goalProgress = (goal) => {
+  let pct
+  if(goal.type === 'Smanjenje težine') {
+    pct = (goal.target / goal.current) * 100
+  } else {
+    pct = (goal.current / goal.target) * 100
+  }
+  return Math.min(Math.round(pct), 100)
+}
+
 const bmi = computed(() => {
     if (!userStore.tezina || !userStore.visina) return null
     const visina_m = userStore.visina / 100
@@ -120,6 +133,30 @@ const chartBarsReal = computed(() => {
 <p class="empty-overload" v-else>Nema podataka još. Odradi Bench Press, Squat ili Deadlift!</p>
       <!-- treba dinamicki izracun iz historyStore kada mauro zavrsi logiranje -->
     </div>
+
+    <!-- ciljevi card-->
+<div class="goals-card" v-if="goals.length > 0">
+    <h3>Moji ciljevi</h3>
+    <div class="goals-list">
+        <div class="goal-item" v-for="goal in goals" :key="goal.id">
+            <div class="goal-item-header">
+                <span class="goal-item-name">{{ goal.description }}</span>
+                <span class="goal-item-pct">{{ goalProgress(goal) }}%</span>
+            </div>
+            <div class="goal-item-values">
+                <span>{{ goal.current }}kg</span>
+                <span>{{ goal.target }}kg</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill"
+                    :class="goal.type === 'Smanjenje težine' ? 'positive' : 'positive'"
+                    :style="{ width: goalProgress(goal) + '%' }">
+                </div>
+            </div>
+            <p class="goal-item-deadline" v-if="goal.deadline">Rok: {{ goal.deadline }}</p>
+        </div>
+    </div>
+</div>
 
     <div class="metrics-card">
       <h3>Tjelesni podaci</h3>
@@ -332,6 +369,58 @@ h2 {
 
 .progress-fill.negative {
   background: #ef4444;
+}
+
+.goals-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+}
+
+.goals-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.goal-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.goal-item-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.goal-item-pct {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+.goal-item-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+}
+
+.goal-item-deadline {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 6px 0 0;
 }
 
 </style>
