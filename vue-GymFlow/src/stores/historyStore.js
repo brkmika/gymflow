@@ -75,30 +75,11 @@ export const useHistoryStore = defineStore('history', () => {
 const getMonthlyVolume = (numMonths) => {
   const monthNames = ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro']
 
-  // ako nema treninga, prikazi prazno
-  if (workoutHistory.value.length === 0) return []
-
-  // pronadji datum prvog treninga
-  let firstWorkoutMonth = null
-  let firstWorkoutYear = null
-
-  for (let i = 0; i < workoutHistory.value.length; i++) {
-    const parts = workoutHistory.value[i].date.split('.')
-    const month = Number(parts[1]) - 1
-    const year = Number(parts[2])
-
-    if (firstWorkoutYear === null || year < firstWorkoutYear || (year === firstWorkoutYear && month < firstWorkoutMonth)) {
-      firstWorkoutMonth = month
-      firstWorkoutYear = year
-    }
-  }
-
   const months = []
-  const startDate = new Date(firstWorkoutYear, firstWorkoutMonth, 1)
+  const now = new Date()
 
-  // pripremi mjesece pocevsi od prvog treninga, do numMonths mjeseci
-  for (let i = 0; i < numMonths; i++) {
-    const d = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1)
+  for (let i = numMonths - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     months.push({
       label: monthNames[d.getMonth()],
       year: d.getFullYear(),

@@ -7,15 +7,15 @@
 
     <div class="quick-stats">
         <div class="stat-card">
-            <span class="stat-number indigo">{{  treninziOvajMjesec }}</span>
+            <span class="stat-number" :style="{ color: bojaTreninzi }">{{  treninziOvajMjesec }}</span>
             <span class="stat-label">Treninga ovaj mjesec </span>
         </div>
         <div class="stat-card">
-            <span class="stat-number green">{{  bestOverload }}</span> 
+            <span class="stat-number" :style="{ color: bojaOverload }">{{  bestOverload }}</span> 
             <span class="stat-label">Progressive Overload</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number purple">{{ tjedniCilj }}</span>
+            <span class="stat-number" :style="{ color: bojaTjedniCilj }">{{ tjedniCilj }}</span>
             <span class="stat-label">Tjedni cilj</span>
         </div>
     </div>
@@ -127,8 +127,12 @@ const navigate = (screen) => {
 // tjedni cilj = koliko je odradeno
 const tjedniCilj = computed(() => {
     if(!userStore.treninziTjedno) return '-'
-    const odradeno = historyStore.getCurrentWeekWorkouts().length
-    return `${odradeno}/${userStore.treninziTjedno}`
+    const weekWorkouts = historyStore.getCurrentWeekWorkouts()
+    const uniqueDays = new Set()
+    for (let i = 0; i < weekWorkouts.length; i++) {
+        uniqueDays.add(weekWorkouts[i].day)
+    }
+    return `${uniqueDays.size}/${userStore.treninziTjedno}`
 })
 
 // broj treninga ovaj mjesec
@@ -163,6 +167,29 @@ const bestOverload = computed(() => {
     if(!best) return '-'
     const prefix = best.percent > 0 ? '+' : ''
     return `${prefix}${best.percent}%`
+})
+
+const bojaTreninzi = computed (() => {
+    if (treninziOvajMjesec.value === 0) return '#ef4444'
+    return '#4f46e5'
+})
+
+const bojaOverload = computed (() => {
+    if (bestOverload.value === '-' || bestOverload.value.startsWith('-')) return '#9ca3af'
+    return '#16a34a'
+})
+
+const bojaTjedniCilj = computed (() => {
+    if (!userStore.treninziTjedno) return '#9ca3af'
+    const weekWorkouts = historyStore.getCurrentWeekWorkouts()
+    const uniqueDays = new Set()
+    for (let i = 0; i < weekWorkouts.length; i++) {
+        uniqueDays.add(weekWorkouts[i].day)
+    }
+    const odradeno = uniqueDays.size
+    if (odradeno === 0) return '#ef4444'
+    if (odradeno >= userStore.treninziTjedno) return '#16a34a'
+    return '#4f46e5'
 })
 
 </script>

@@ -86,6 +86,13 @@ const chartBarsReal = computed(() => {
   }
   return bars
 })
+
+const chartMaxVolume = computed(() => {
+  const numMonths = periodToMonths[selectedPeriod.value]
+  const months = historyStore.getMonthlyVolume(numMonths)
+  return Math.max(...months.map(m => m.volume), 0)
+})
+
 </script>
 
 <template>
@@ -105,16 +112,22 @@ const chartBarsReal = computed(() => {
 
 <div class="chart-card">
   <h3>Ukupni volumen treninga</h3>
-  <div class="bar-chart" v-if="chartBarsReal.length > 0">
-    <div v-for="(bar, idx) in chartBarsReal" :key="idx" class="bar-wrapper">
-      <div class="bar" :style="{ height: bar.height + '%' }"></div>
+  <div class="chart-wrapper" v-if="chartBarsReal.length > 0">
+    <div class="y-axis">
+      <span>{{ chartMaxVolume >= 1000 ? Math.round(chartMaxVolume / 1000) + 'k' : chartMaxVolume }}kg</span>
+      <span>{{ chartMaxVolume >= 1000 ? Math.round(chartMaxVolume / 2000) + 'k' : Math.round(chartMaxVolume / 2) }}kg</span>
+      <span>0</span>
+    </div>
+    <div class="bar-chart">
+      <div v-for="(bar, idx) in chartBarsReal" :key="idx" class="bar-col">
+        <div class="bar-area">
+          <div class="bar" :style="{ height: bar.height + '%' }"></div>
+        </div>
+        <div class="bar-label">{{ bar.label }}</div>
+      </div>
     </div>
   </div>
   <p class="empty-chart" v-else>Nema podataka za prikaz. Odradi prvi trening!</p>
-
-  <div class="chart-labels" v-if="chartBarsReal.length > 0">
-  <span v-for="(bar, idx) in chartBarsReal" :key="idx">{{ bar.label }}</span>
-</div>
 </div>
 
     <div class="overload-card">
@@ -245,9 +258,8 @@ h2 {
 }
 
 .bar-chart {
-    height: 160px;
+    flex: 1;
     display: flex;
-    align-items: flex-end;
     gap: 6px;
 }
 
@@ -260,10 +272,31 @@ h2 {
     justify-content: center;
 }
 
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-area {
+  height: 160px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
 .bar {
-    width: 100%;
+    width: 70%;
     background: linear-gradient(to top, #4f46e5, #818cf8);
     border-radius: 4px 4px 0 0;
+}
+
+.bar-label {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 6px;
+  text-align: center;
 }
 
 .chart-labels {
@@ -272,6 +305,22 @@ h2 {
     margin-top: 8px;
     font-size: 11px;
     color: #9ca3af;
+}
+
+.chart-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 160px;
+  font-size: 10px;
+  color: #9ca3af;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .overload-card {
