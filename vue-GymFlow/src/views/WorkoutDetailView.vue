@@ -88,6 +88,8 @@ const saveWorkout = () => {
                      <button class="remove-set-btn" @click="removeSet(idx, setIdx)">✕</button>
                 </div>
             </div>
+              <button class="add-set-btn" @click="addSet(idx)">+ Dodaj Seriju</button>
+
             
               <div class="overload-info"
                 :class="getOverload(exercise.name, exercise.sets) >= 0 ? 'positive' : 'negative'"
