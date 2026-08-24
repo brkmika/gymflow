@@ -58,7 +58,7 @@
     </button>
 
 
-    <button class="menu-card highlight" @click="navigate('logiraj-trening')">
+    <button class="menu-card highlight" @click="logToday">
         <div class="menu-icon white-bg">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -115,13 +115,30 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore'
 import { computed } from 'vue'
 import { useHistoryStore } from '@/stores/historyStore';
+import { useWorkoutStore } from '../stores/workoutStore'
 
 const router = useRouter()
 const userStore = useUserStore()
 const historyStore = useHistoryStore()
+const workoutStore = useWorkoutStore()
 
 const navigate = (screen) => {
     router.push('/' + screen)
+}
+
+const dayNames = ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota']
+
+const logToday = () => {
+    const todayName = dayNames[new Date().getDay()]
+    const plan = workoutStore.weeklyPlan
+    const todayWorkout = plan?.find(w => w.day === todayName)
+
+    if (!todayWorkout || todayWorkout.name === 'Odmor') {
+        alert('Danas nemaš planiran trening!')
+        return
+    }
+
+    router.push({ path: '/trening', query: { name: todayWorkout.name, day: todayWorkout.day } })
 }
 
 // tjedni cilj = koliko je odradeno

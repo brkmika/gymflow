@@ -164,7 +164,15 @@ const getExerciseProgress = (exerciseName) => {
         percent: percentChange.toFixed(1)
     }
 }
+// vraca max tezinu za vjezbu iz POSLJEDNJEG spremljenog treninga (za progressive overload)
+const getLastWeightForExercise = (exerciseName) => {
+    for (let i = workoutHistory.value.length - 1; i >= 0; i--) {
+        const w = getMaxWeightForExercise(workoutHistory.value[i], exerciseName)
+        if (w > 0) return w
+    }
+    return null
+}
 
 
-    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume, isDayCompletedThisWeek, getExerciseProgress}
+    return { workoutHistory, saveWorkout, getCurrentWeekWorkouts, getAllWorkouts, getVolumeHistory, getMonthlyVolume, isDayCompletedThisWeek, getExerciseProgress, getLastWeightForExercise}
 })

@@ -6,6 +6,7 @@ import GoalsView from '../views/GoalsView.vue'
 import PlanView from '../views/PlanView.vue'
 import WorkoutDetailView from '../views/WorkoutDetailView.vue'
 import HistoryView from '@/views/HistoryView.vue'
+import PlanEditView from '../views/PlanEditView.vue'
 
 
 
@@ -14,10 +15,10 @@ const routes = [
     { path: '/profil', component: ProfileView},
     { path: '/ciljevi', component: GoalsView},
     { path: '/plan-treninga', component: PlanView},
-    { path: '/logiraj-trening', component: HomeView},
     { path: '/napredak', component: ProgressView},
     { path: '/dnevnik', component: HistoryView},
     { path: '/trening', component: WorkoutDetailView},
+    { path: '/uredi-vjezbe', component: PlanEditView},
 ]
 
 const router = createRouter({

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useUserStore } from './userStore'
 
 export const useWorkoutStore = defineStore('workout', () => {
@@ -48,7 +48,7 @@ export const useWorkoutStore = defineStore('workout', () => {
     return plans[userStore.treninziTjedno] || null
    })
 
-const exercises = {
+const defaultExercises = {
   'Full-Body A': [
     { name: 'Squat', sets: [{ weight: null, reps: 8 }, { weight: null, reps: 8 }, { weight: null, reps: 8 }] },
     { name: 'Bench Press', sets: [{ weight: null, reps: 8 }, { weight: null, reps: 8 }, { weight: null, reps: 8 }] },
@@ -108,10 +108,25 @@ const exercises = {
   ],
 }
 
-const getExercises = (workoutName) => {
-  return exercises[workoutName] || []
+// vjezbe spremljene PO DANU (Ponedjeljak, Utorak...), da Upper u ponedjeljak i Upper u cetvrtak budu nezavisni
+const customExercises = ref(JSON.parse(localStorage.getItem('plan_exercises_by_day')) || {})
+
+watch(customExercises, (val) => {
+  localStorage.setItem('plan_exercises_by_day', JSON.stringify(val))
+}, { deep: true })
+
+// vraca vjezbe za konkretan dan; ako taj dan jos nije custom-iziran, vraca default za tu vrstu treninga
+const getExercises = (day, workoutName) => {
+  if (customExercises.value[day]) {
+    return customExercises.value[day]
+  }
+  return defaultExercises[workoutName] || []
+}
+
+const updateExercises = (day, newList) => {
+  customExercises.value[day] = newList
 }
 
 
-   return { weeklyPlan, getExercises }
+   return { weeklyPlan, getExercises, updateExercises }
 })

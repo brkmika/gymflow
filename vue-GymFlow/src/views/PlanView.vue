@@ -22,7 +22,7 @@ const planLabel = computed(() => {
 
 const handleClick = (workout) => {
     if (workout.exercises === 0) return
-    router.push({path: '/trening', query: { name: workout.name, day: workout.day} })
+    router.push({path: '/uredi-vjezbe', query: { name: workout.name, day: workout.day} })
 }
 
 const weekRange = computed(() => {
@@ -86,7 +86,7 @@ const weekRange = computed(() => {
             <div class="workout-day">{{ workout.day }}</div>
             <div class="workout-name">{{ workout.name }}</div>
             <div v-if="workout.exercises > 0" class="workout-count">
-              {{ workout.exercises }} vježbi
+              {{ workoutStore.getExercises(workout.day, workout.name).length }} vježbi
             </div>
           </div>
           <div v-if="historyStore.isDayCompletedThisWeek(workout.day)" class="check-icon">

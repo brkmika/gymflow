@@ -9,13 +9,14 @@ const route = useRoute()
 const workoutStore = useWorkoutStore()
 const historyStore = useHistoryStore()
 
-// Povuci workout podatke na temelju route parametra
 const workout = {
     name: route.query.name || 'Trening',
     day: route.query.day || ''
 }
 
-const exercises = ref(workoutStore.getExercises(workout.name).map(e => ({
+const today = new Date().toLocaleDateString('hr-HR')
+
+const exercises = ref(workoutStore.getExercises(workout.day, workout.name).map(e => ({
     ...e,
     sets: e.sets.map(s => ({...s}))
 })))
@@ -28,6 +29,27 @@ const addSet = (exerciseIdx) => {
 const removeSet = (exerciseIdx, setIdx) => {
     if(exercises.value[exerciseIdx].sets.length === 1) return
     exercises.value[exerciseIdx].sets.splice(setIdx, 1)
+}
+
+const removeExercise = (exerciseIdx) => {
+    if (exercises.value.length === 1) return
+    exercises.value.splice(exerciseIdx, 1)
+}
+
+const addExercise = () => {
+    const name = prompt('Naziv vježbe:')
+    if (!name) return
+    exercises.value.push({ name, sets: [{ weight: null, reps: 10 }] })
+}
+
+const getOverload = (exerciseName, sets) => {
+    const lastWeight = historyStore.getLastWeightForExercise(exerciseName)
+    if (lastWeight === null) return null
+
+    const currentMax = Math.max(...sets.map(s => Number(s.weight) || 0))
+    if (currentMax === 0) return null
+
+    return currentMax - lastWeight
 }
 
 const saveWorkout = () => {
@@ -53,7 +75,10 @@ const saveWorkout = () => {
         <!-- lista vjezbi-->
         <div class="exercise-list">
             <div class="exercise-card" v-for="(exercise, idx) in exercises" :key="idx">
-            <h3>{{ exercise.name }}</h3>
+            <div class="exercise-header">
+              <h3>{{ exercise.name }}</h3>
+              <button class="remove-exercise-btn" @click="removeExercise(idx)">✕</button>
+            </div>
 
            <div class="sets">
               <div class="set-row" v-for="(set, setIdx) in exercise.sets" :key="setIdx">
@@ -64,10 +89,15 @@ const saveWorkout = () => {
                 </div>
             </div>
             
-            <button class="add-set-btn" @click="addSet(idx)">+ Dodaj Seriju</button>
+              <div class="overload-info"
+                :class="getOverload(exercise.name, exercise.sets) >= 0 ? 'positive' : 'negative'"
+                v-if="getOverload(exercise.name, exercise.sets) !== null">
+                Progressive overload: {{ getOverload(exercise.name, exercise.sets) >= 0 ? '+' : '' }}{{ getOverload(exercise.name, exercise.sets) }}kg od prošli put
+            </div>
             </div>
         </div>
-        <!-- Napravit: spremanje unesenih tezina-->
+
+        <button class="add-exercise-btn" @click="addExercise">+ Dodaj vježbu</button>
          <button class="save-btn" @click="saveWorkout">Spremi trening</button>
     </div>
 </template>
@@ -251,5 +281,43 @@ h2 {
     color: #dc2626
 }
 
+.remove-exercise-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+}
+
+.remove-exercise-btn:hover {
+  color: #dc2626;
+}
+
+.add-exercise-btn {
+  width: 100%;
+  background: white;
+  color: #4f46e5;
+  border: 1px solid #4f46e5;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.overload-info {
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.overload-info.positive {
+  color: #16a34a;
+}
+
+.overload-info.negative {
+  color: #dc2626;
+}
 
 </style>
